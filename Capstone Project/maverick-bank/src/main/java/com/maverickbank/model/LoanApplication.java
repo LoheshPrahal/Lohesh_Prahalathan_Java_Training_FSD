@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class LoanApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "requested_amount", nullable = false)
     private double requestedAmount;

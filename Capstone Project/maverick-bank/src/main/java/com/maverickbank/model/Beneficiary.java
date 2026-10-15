@@ -12,7 +12,7 @@ import lombok.*;
 public class Beneficiary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "account_name", nullable = false)
     private String accountName;

@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(nullable = false)
     private String name;
@@ -39,7 +39,7 @@ public class Customer {
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private UserStatus status;
+    private UserStatus status = UserStatus.ACTIVE;
 
     @OneToOne
     @JoinColumn(name = "user_id")

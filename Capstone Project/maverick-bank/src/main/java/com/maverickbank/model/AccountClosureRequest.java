@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class AccountClosureRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "request_date", nullable = false)
     private LocalDate requestDate;

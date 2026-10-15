@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class LoanDisbursement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "disbursement_amount", nullable = false)
     private double disbursementAmount;

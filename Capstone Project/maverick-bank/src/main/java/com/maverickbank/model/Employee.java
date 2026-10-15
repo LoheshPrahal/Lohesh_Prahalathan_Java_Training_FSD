@@ -13,7 +13,7 @@ import lombok.*;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(nullable = false)
     private String name;
@@ -23,7 +23,7 @@ public class Employee {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private UserStatus status;
+    private UserStatus status = UserStatus.ACTIVE;
 
     @OneToOne
     @JoinColumn(name = "user_id")

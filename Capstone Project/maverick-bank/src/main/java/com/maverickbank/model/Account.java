@@ -4,7 +4,9 @@ import com.maverickbank.enums.AccountStatus;
 import com.maverickbank.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -16,7 +18,7 @@ import java.time.LocalDate;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "account_number", nullable = false)
     private String accountNumber;
@@ -33,7 +35,8 @@ public class Account {
     private AccountStatus accountStatus;
 
     @Column(name = "opened_date", nullable = false)
-    private LocalDate openedDate;
+    @CreationTimestamp
+    private Instant openedDate;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
@@ -44,7 +47,7 @@ public class Account {
     private Branch branch;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employee_id", nullable = true)
     private Employee approvedBy;
 
 

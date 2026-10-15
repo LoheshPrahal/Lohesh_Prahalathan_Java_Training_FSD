@@ -14,7 +14,7 @@ import lombok.*;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(nullable = false)
     private String name;
@@ -23,7 +23,7 @@ public class Admin {
     private String email;
 
     @Enumerated(value = EnumType.STRING)
-    private UserStatus status;
+    private UserStatus status = UserStatus.ACTIVE;
 
 
     @OneToOne
