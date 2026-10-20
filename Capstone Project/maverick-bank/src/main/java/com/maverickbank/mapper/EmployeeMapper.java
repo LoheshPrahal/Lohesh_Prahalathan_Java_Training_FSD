@@ -8,5 +8,7 @@ public class EmployeeMapper {
         Employee employee = new Employee();
         employee.setName(dto.name());
         employee.setEmail(dto.email());
+
+        return employee;
     }
 }
