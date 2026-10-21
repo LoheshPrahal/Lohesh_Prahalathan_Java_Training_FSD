@@ -25,8 +25,11 @@ public class Customer {
     @Enumerated(value = EnumType.STRING)
     private CustomerGender gender;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String contact;
 
     @Column(nullable = false)
     private String address;
@@ -34,15 +37,18 @@ public class Customer {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(name = "aadhaar_number", nullable = false)
+    @Column(name = "aadhaar_number", nullable = false, unique = true)
     private String aadhaarNumber;
+
+    @Column(name = "pan_number", nullable = false, unique = true)
+    private String panNumber;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private UserStatus status = UserStatus.ACTIVE;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 

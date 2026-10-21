@@ -1,7 +1,6 @@
 package com.maverickbank.model;
 
-import com.maverickbank.enums.BranchName;
-import com.maverickbank.enums.IfscCode;
+import com.maverickbank.enums.City;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,13 +21,12 @@ public class Branch {
     @Column(nullable = false)
     private String address;
 
-    @Column(name = "branch_name", nullable = false)
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private BranchName branchName;
+    private City city;
 
-    @Column(name = "ifsc_code", nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private IfscCode ifscCode;
+    @Column(name = "ifsc_code", nullable = false, unique = true)
+    private String ifscCode;
 
 
 }

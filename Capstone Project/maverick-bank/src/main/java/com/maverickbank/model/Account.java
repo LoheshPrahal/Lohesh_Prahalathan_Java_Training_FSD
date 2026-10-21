@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "account_number", nullable = false)
+    @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
 
     @Column(name = "account_type", nullable = false)
@@ -28,13 +28,13 @@ public class Account {
     private AccountType accountType;
 
     @Column(nullable = false)
-    private double balance;
+    private double balance = 0;
 
     @Column(name = "account_status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private AccountStatus accountStatus;
 
-    @Column(name = "opened_date", nullable = false)
+    @Column(name = "opened_date", nullable = false, updatable = false)
     @CreationTimestamp
     private Instant openedDate;
 

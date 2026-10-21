@@ -1,12 +1,14 @@
 package com.maverickbank.service;
 
 import com.maverickbank.dto.request.AdminDto;
+import com.maverickbank.dto.response.AdminRespDto;
 import com.maverickbank.enums.UserRole;
 import com.maverickbank.exception.ResourceNotFoundException;
 import com.maverickbank.mapper.AdminMapper;
 import com.maverickbank.model.Admin;
 import com.maverickbank.model.User;
 import com.maverickbank.repository.AdminRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminService {
     private final UserService userService;
     private final AdminRepository adminRepository;
@@ -26,11 +29,12 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-    public Admin getAdminById(long id) {
-        return adminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Admin with id " + id + " does not exist!"));
+    public AdminRespDto getAdminById(long id) {
+        Admin admin = adminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Admin with id " + id + " does not exist!"));
+        return AdminMapper.convertEntityToDto(admin);
     }
 
-    public List<Admin> getAllAdmin() {
-        return adminRepository.findAll();
+    public List<AdminRespDto> getAllAdmin() {
+        return adminRepository.findAll().stream().map(AdminMapper :: convertEntityToDto).toList();
     }
 }

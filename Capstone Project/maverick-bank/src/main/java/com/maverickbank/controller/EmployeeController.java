@@ -1,6 +1,7 @@
 package com.maverickbank.controller;
 
 import com.maverickbank.dto.request.EmployeeDto;
+import com.maverickbank.dto.request.EmployeeUpdateDto;
 import com.maverickbank.enums.UserRole;
 import com.maverickbank.mapper.EmployeeMapper;
 import com.maverickbank.model.Employee;
@@ -32,5 +33,15 @@ public class EmployeeController {
     @GetMapping("/api/employee/all")
     public List<Employee> getAllEmployees(){
         return employeeService.getAllEmployees();
+    }
+
+    @PutMapping("/api/employee/{id}")
+    public void update(@PathVariable long id, @RequestBody EmployeeUpdateDto dto){
+        employeeService.update(id, dto);
+    }
+
+    @PutMapping("/api/employee/deactivate/{id}")
+    public void deactivate(@PathVariable long id){
+        employeeService.deactivate(id);
     }
 }

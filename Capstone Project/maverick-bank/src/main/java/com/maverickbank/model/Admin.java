@@ -19,15 +19,16 @@ public class Admin {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserStatus status = UserStatus.ACTIVE;
 
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 

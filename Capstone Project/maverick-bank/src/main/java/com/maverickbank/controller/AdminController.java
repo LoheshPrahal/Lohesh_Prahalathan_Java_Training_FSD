@@ -1,6 +1,7 @@
 package com.maverickbank.controller;
 
 import com.maverickbank.dto.request.AdminDto;
+import com.maverickbank.dto.response.AdminRespDto;
 import com.maverickbank.model.Admin;
 import com.maverickbank.service.AdminService;
 import jakarta.validation.Valid;
@@ -20,12 +21,12 @@ public class AdminController {
     }
 
     @GetMapping("/api/admin/{id}")
-    public Admin getAdminById(@PathVariable long id){
+    public AdminRespDto getAdminById(@PathVariable long id){
         return adminService.getAdminById(id);
     }
 
     @GetMapping("/api/admin/all")
-    public List<Admin> getAllAdmin(){
+    public List<AdminRespDto> getAllAdmin(){
         return adminService.getAllAdmin();
     }
 }

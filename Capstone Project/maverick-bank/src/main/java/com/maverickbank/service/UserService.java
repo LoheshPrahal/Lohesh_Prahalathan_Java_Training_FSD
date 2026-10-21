@@ -1,6 +1,7 @@
 package com.maverickbank.service;
 
 import com.maverickbank.enums.UserRole;
+import com.maverickbank.exception.ResourceNotFoundException;
 import com.maverickbank.model.User;
 import com.maverickbank.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,15 @@ public class UserService {
         user.setRole(role);
         userRepository.save(user);
         return user;
+    }
+
+    public User getUserById(long id){
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+    }
+
+    public void deactivateUser(long id){
+        User user = getUserById(id);
+        user.setActive(false);
+        userRepository.save(user);
     }
 }
