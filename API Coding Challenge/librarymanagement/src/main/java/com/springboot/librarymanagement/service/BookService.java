@@ -34,7 +34,7 @@ public class BookService {
 
     public Book updateBook(String isbn, @Valid BookDto dto) {
         Book book = bookRepository.getBookByISBN(isbn);
-        if(book == null) throw new ResourceNotFoundException("Book not found in db!");
+        if(book == null) throw new ResourceNotFoundException("Book not found");
         boolean flag = false;
 
         if(!(dto.title() == null) && !(dto.title().isEmpty())){
@@ -47,10 +47,17 @@ public class BookService {
             flag = true;
         }
 
+        if(dto.publicationYear() != 0){
+            book.setPubicationYear(dto.publicationYear());
+            flag = true;
+        }
+
         if(!flag) throw new InvalidCallException("Update operation terminated!");
 
         return bookRepository.save(book);
     }
+
+
 
     public void deleteBook(String isbn) {
         Book book = bookRepository.getBookByISBN(isbn);
