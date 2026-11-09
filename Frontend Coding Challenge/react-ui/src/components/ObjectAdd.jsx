@@ -2,6 +2,8 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 
+const addedObjects = []
+
 function ObjectAdd() {
 
     const [name, setName] = useState("")
@@ -26,6 +28,7 @@ function ObjectAdd() {
         try {
             const response = await axios.post('https://api.restful-api.dev/objects', obj)
             console.log(response.data)
+            addedObjects.push(response.data)
 
             navigate("/")
         } catch (err) {
@@ -78,3 +81,4 @@ function ObjectAdd() {
 }
 
 export default ObjectAdd
+export { addedObjects }

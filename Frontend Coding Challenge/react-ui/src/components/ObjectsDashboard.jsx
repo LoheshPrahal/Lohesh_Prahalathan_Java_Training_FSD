@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import ObjectList from './ObjectList'
 import axios from 'axios'
 import { Link } from 'react-router'
+import { addedObjects } from "./ObjectAdd"
+
+
 
 function ObjectsDashboard() {
 
@@ -13,7 +16,7 @@ function ObjectsDashboard() {
         const getAllObjects = async () => {
             try {
                 const resp = await axios.get('https://api.restful-api.dev/objects')
-                setObjects(resp.data)
+                setObjects([...resp.data, ...addedObjects])
                 console.log(resp)
 
             } catch (err) {
