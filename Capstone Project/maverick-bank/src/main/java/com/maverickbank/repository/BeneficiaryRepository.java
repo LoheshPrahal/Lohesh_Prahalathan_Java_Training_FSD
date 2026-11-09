@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface BeneficiaryRepository extends JpaRepository<Beneficiary, Long> {
     @Query("select count(b) from Beneficiary b where b.customer.id = ?1 and b.accountNumber = ?2")
-    boolean countSameBeneficiaryForCurrentCustomer(long id, String s);
+    boolean countSameBeneficiaryForCurrentCustomer(Long id, String s);
 
     @Query("select b from Beneficiary b join b.customer c join c.user u where u.username = ?1")
     List<Beneficiary> getByCustomerUsername(String name);

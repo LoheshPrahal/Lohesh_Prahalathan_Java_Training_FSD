@@ -2,7 +2,6 @@ package com.maverickbank.dto.request;
 
 import com.maverickbank.enums.AccountType;
 import com.maverickbank.enums.CustomerGender;
-import com.maverickbank.enums.UserStatus;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;

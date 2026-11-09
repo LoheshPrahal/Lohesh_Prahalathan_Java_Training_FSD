@@ -7,7 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @NoArgsConstructor
@@ -29,7 +29,7 @@ public class Transaction {
 
     @Column(name = "transaction_date", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime transactionDate;
+    private Instant transactionDate;
 
     @Column(nullable = false)
     private String description;

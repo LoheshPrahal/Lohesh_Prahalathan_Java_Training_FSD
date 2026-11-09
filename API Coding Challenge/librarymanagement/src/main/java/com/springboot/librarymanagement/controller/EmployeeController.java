@@ -17,7 +17,10 @@ public class EmployeeController {
 
 
     @GetMapping("/api/employee/fetch")
-    public List<EmployeeRespDto> getEmployeesByJobTitleAndCompanyName(@RequestParam JobTitle jobTitle, @RequestParam String companyName, @RequestParam Integer page, @RequestParam Integer size){
+    public List<EmployeeRespDto> getEmployeesByJobTitleAndCompanyName(@RequestParam JobTitle jobTitle,
+                                                                      @RequestParam String companyName,
+                                                                      @RequestParam Integer page,
+                                                                      @RequestParam Integer size){
         return employeeService.getEmployeesByJobTitleAndCompanyName(jobTitle, companyName, page, size);
     }
 }

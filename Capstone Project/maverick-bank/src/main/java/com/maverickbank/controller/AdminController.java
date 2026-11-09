@@ -21,7 +21,7 @@ public class AdminController {
     }
 
     @GetMapping("/api/admin/{id}")
-    public AdminRespDto getAdminById(@PathVariable long id){
+    public AdminRespDto getAdminById(@PathVariable Long id){
         return adminService.getAdminById(id);
     }
 

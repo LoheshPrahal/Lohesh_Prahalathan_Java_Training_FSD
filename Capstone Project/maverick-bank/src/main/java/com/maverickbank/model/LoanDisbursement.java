@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class LoanDisbursement {
 
     @Column(name = "disbursed_date", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDate disbursedDate;
+    private Instant disbursedDate;
 
     @OneToOne
     @JoinColumn(name = "loan_application_id", nullable = false, unique = true)

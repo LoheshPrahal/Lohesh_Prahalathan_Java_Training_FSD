@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class AccountClosureRequest {
 
     @Column(name = "request_date", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDate requestDate;
+    private Instant requestDate;
 
     @Column(nullable = false)
     private String reason;
@@ -34,7 +34,7 @@ public class AccountClosureRequest {
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "processed_by")
+    @JoinColumn(name = "processed_by", nullable = true)
     private Employee processedBy;
 
 

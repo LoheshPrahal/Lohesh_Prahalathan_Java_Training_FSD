@@ -29,7 +29,7 @@ public class BeneficiaryService {
 
         Account destinationAccount = accountService.getByAccountNumber(dto.accountNumber());
 
-        if(destinationAccount.getBranch().getId() != dto.branchId()){
+        if(destinationAccount.getBranch().getId() != branch.getId()){
             throw new InvalidCallException("Beneficiary account does not belong to the selected branch!");
         }
 

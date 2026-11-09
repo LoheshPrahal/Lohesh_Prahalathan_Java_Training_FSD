@@ -29,7 +29,7 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-    public AdminRespDto getAdminById(long id) {
+    public AdminRespDto getAdminById(Long id) {
         Admin admin = adminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Admin with id " + id + " does not exist!"));
         return AdminMapper.convertEntityToDto(admin);
     }

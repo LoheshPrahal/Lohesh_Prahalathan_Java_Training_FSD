@@ -10,7 +10,7 @@ public record AccountRespDto(
         long accountId,
         String accountNumber,
         AccountType accountType,
-        double balance,
+        BigDecimal balance,
         AccountStatus accountStatus,
         Instant openedDate,
         String customerName,

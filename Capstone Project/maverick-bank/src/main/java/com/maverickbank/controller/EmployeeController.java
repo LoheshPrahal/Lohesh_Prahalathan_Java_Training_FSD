@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/api/employee/{id}")
-    public Employee getEmployeeById(@PathVariable long id){
+    public Employee getEmployeeById(@PathVariable Long id){
         return employeeService.getEmployeeById(id);
     }
 
@@ -36,12 +36,12 @@ public class EmployeeController {
     }
 
     @PutMapping("/api/employee/{id}")
-    public void update(@PathVariable long id, @RequestBody EmployeeUpdateDto dto){
+    public void update(@PathVariable Long id, @RequestBody EmployeeUpdateDto dto){
         employeeService.update(id, dto);
     }
 
     @PutMapping("/api/employee/deactivate/{id}")
-    public void deactivate(@PathVariable long id){
+    public void deactivate(@PathVariable Long id){
         employeeService.deactivate(id);
     }
 }

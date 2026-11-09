@@ -21,11 +21,11 @@ public class UserService {
         return user;
     }
 
-    public User getUserById(long id){
+    public User getUserById(Long id){
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
     }
 
-    public void deactivateUser(long id){
+    public void deactivateUser(Long id){
         User user = getUserById(id);
         user.setActive(false);
         userRepository.save(user);

@@ -13,6 +13,7 @@ public record CustomerRespDto(
         String contact,
         String address,
         LocalDate dateOfBirth,
+        int age,
         String aadhaarNumber,
         String panNumber,
         UserStatus status,

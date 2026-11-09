@@ -12,7 +12,7 @@ public class AdminMapper {
         return admin;
     }
 
-    public static AdminRespDto convertEntityToDto(Admin admin) {
+    public static AdminRespDto convertEntityToDto(Admin admin){
         return new AdminRespDto(
                 admin.getId(),
                 admin.getName(),

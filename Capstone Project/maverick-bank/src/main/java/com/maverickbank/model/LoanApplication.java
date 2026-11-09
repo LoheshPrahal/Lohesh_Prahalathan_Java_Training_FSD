@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -27,7 +28,7 @@ public class LoanApplication {
 
     @Column(name = "application_date", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDate applicationDate;
+    private Instant applicationDate;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

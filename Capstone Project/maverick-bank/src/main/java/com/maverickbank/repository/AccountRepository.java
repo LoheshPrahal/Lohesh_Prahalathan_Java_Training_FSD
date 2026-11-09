@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -26,8 +27,14 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> getPendingAccounts(AccountStatus status);
 
     @Query("select count(a) from Account a where a.accountNumber = ?1")
-    int countAccountNumber(long accountNumber);
+    int countAccountNumber(Long accountNumber);
 
     @Query("select a from Account a where a.accountNumber = ?1")
     Account getByAccountNumber(String accountNumber);
+
+    @Query("select count(a) from Account a where a.accountNumber = ?1")
+    Long countByAccountStatus(AccountStatus accountStatus);
+
+    @Query("select sum(a.balance) from Account a where a.accountStatus = ?1")
+    BigDecimal sumBalanceByAccountStatus(AccountStatus accountStatus);
 }

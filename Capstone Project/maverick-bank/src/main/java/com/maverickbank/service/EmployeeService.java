@@ -25,14 +25,14 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     public void insertEmployee(@Valid EmployeeDto dto) {
-        Employee employee = EmployeeMapper.convertDtoToEmployee(dto);
+        Employee employee = EmployeeMapper.convertDtoToEntity(dto);
         User user = userService.getUserObject(dto.username(), dto.password(), UserRole.EMPLOYEE);
         employee.setUser(user);
         employeeRepository.save(employee);
 
     }
 
-    public Employee getEmployeeById(long id) {
+    public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee with id " + id + " not found!"));
     }
 
@@ -40,7 +40,7 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public void update(long id, EmployeeUpdateDto dto) {
+    public void update(Long id, EmployeeUpdateDto dto) {
         Employee employee = getEmployeeById(id);
         boolean flag = false;
 
@@ -61,7 +61,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public void deactivate(long id) {
+    public void deactivate(Long id) {
         Employee employee = getEmployeeById(id);
         employee.setStatus(UserStatus.INACTIVE);
         userService.deactivateUser(employee.getUser().getId());

@@ -12,11 +12,14 @@ import com.maverickbank.model.Customer;
 import com.maverickbank.model.Employee;
 import com.maverickbank.repository.AccountRepository;
 import com.maverickbank.repository.CustomerRepository;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,7 +44,7 @@ public class AccountService {
         Account account = AccountMapper.convertDtoToEntity(dto);
         account.setCustomer(customer);
         account.setBranch(branchService.getBranchById(dto.branchId()));
-        account.setBalance(0);
+        account.setBalance(BigDecimal.ZERO);
         account.setAccountStatus(AccountStatus.PENDING);
 
         return accountRepository.save(account);
@@ -51,15 +54,19 @@ public class AccountService {
         return accountRepository.getAccountsByCustomerUsername(name).stream().map(AccountMapper::convertEntityToDto).toList();
     }
 
-    public Account getById(long id){
+    public Account getById(Long id){
         return accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found!"));
     }
 
-    public AccountRespDto getMyAccountById(long id, String name) {
+    public Account getOwnedAccount(Long id, String name){
         Account account = getById(id);
         if(!account.getCustomer().getUser().getUsername().equals(name)){
             throw new OwnershipException("This account does not belong to the currently logged in customer");
         }
+        return account;
+    }
+    public AccountRespDto getMyAccountById(Long id, String name) {
+        Account account = getOwnedAccount(id, name);
 
         return AccountMapper.convertEntityToDto(account);
 
@@ -69,7 +76,7 @@ public class AccountService {
         return accountRepository.getPendingAccounts(AccountStatus.PENDING).stream().map(AccountMapper :: convertEntityToDto).toList();
     }
 
-    public void approveAccount(long id, String name) {
+    public void approveAccount(Long id, String name) {
         Account account = getById(id);
 
         if(account.getAccountStatus() != AccountStatus.PENDING) throw new InvalidCallException("Account is not waiting for approval!");
@@ -95,5 +102,22 @@ public class AccountService {
 
     public Account getByAccountNumber(String accountNumber) {
         return accountRepository.getByAccountNumber(accountNumber);
+    }
+
+    public void closeAccount(Account account) {
+        account.setAccountStatus(AccountStatus.CLOSED);
+        accountRepository.save(account);
+    }
+
+    public void credit(Account account, BigDecimal amount) {
+        account.setBalance(account.getBalance().add(amount));
+        accountRepository.save(account);
+    }
+
+    public void debit(Account account, BigDecimal amount) {
+        if(account.getBalance().compareTo(amount) < 0) throw new InvalidCallException("Insufficient Balance!");
+
+        account.setBalance(account.getBalance().subtract(amount));
+        accountRepository.save(account);
     }
 }

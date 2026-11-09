@@ -28,7 +28,7 @@ public class CustomerController {
     }
 
     @GetMapping("/api/customer/{id}")
-    public Customer getCustomerById(@PathVariable long id){
+    public Customer getCustomerById(@PathVariable Long id){
         return customerService.getCustomerById(id);
     }
 
@@ -38,12 +38,12 @@ public class CustomerController {
     }
 
     @PutMapping("/api/customer/{id}")
-    public void update(@PathVariable long id, @RequestBody CustomerUpdateDto dto){
+    public void update(@PathVariable Long id, @RequestBody CustomerUpdateDto dto){
         customerService.update(id, dto);
     }
 
     @PutMapping("/api/customer/deactivate/{id}")
-    public void deactivate(@PathVariable long id){
+    public void deactivate(@PathVariable Long id){
         customerService.deactivate(id);
     }
 }

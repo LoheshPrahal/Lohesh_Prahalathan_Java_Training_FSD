@@ -30,7 +30,7 @@ public class AccountController {
     }
 
     @GetMapping("/api/account/my/{id}")
-    public AccountRespDto getMyAccountById(@PathVariable long id, Principal principal){
+    public AccountRespDto getMyAccountById(@PathVariable Long id, Principal principal){
         return accountService.getMyAccountById(id, principal.getName());
     }
 
@@ -40,7 +40,7 @@ public class AccountController {
     }
 
     @PutMapping("/api/account/approve/{id}")
-    public void approveAccount(@PathVariable long id, Principal principal){
+    public void approveAccount(@PathVariable Long id, Principal principal){
         accountService.approveAccount(id, principal.getName());
     }
 }

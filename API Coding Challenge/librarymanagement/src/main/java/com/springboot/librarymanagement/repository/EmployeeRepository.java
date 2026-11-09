@@ -20,4 +20,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             where e.jobTitle = ?1 and c.name = ?2
         """)
     public List<EmployeeRespDto> getEmployeesByJobTitleAndCompanyName(JobTitle jobTitle, String companyName, Pageable pageable);
+
+
+
+
 }

@@ -40,7 +40,7 @@ public class CustomerService {
         accountService.createBankAccount(customer, new AccountDto(customerDto.accountType(), customerDto.branchId()));
     }
 
-    public Customer getCustomerById(long id) {
+    public Customer getCustomerById(Long id) {
         return customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer with id " + id + " not found"));
     }
 
@@ -52,7 +52,7 @@ public class CustomerService {
         return CustomerMapper.convertEntityToDto(findCustomerByUsername(name));
     }
 
-    public void update(long id, CustomerUpdateDto dto) {
+    public void update(Long id, CustomerUpdateDto dto) {
         Customer customer = getCustomerById(id);
         boolean flag = false;
         if(dto.name() != null && !(dto.name().isBlank())){
@@ -80,7 +80,7 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public void deactivate(long id) {
+    public void deactivate(Long id) {
         Customer customer = getCustomerById(id);
         customer.setStatus(UserStatus.INACTIVE);
         userService.deactivateUser(customer.getUser().getId());

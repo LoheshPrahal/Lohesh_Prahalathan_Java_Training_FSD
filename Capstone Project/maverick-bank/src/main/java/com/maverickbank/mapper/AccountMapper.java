@@ -2,7 +2,6 @@ package com.maverickbank.mapper;
 
 import com.maverickbank.dto.request.AccountDto;
 import com.maverickbank.dto.response.AccountRespDto;
-import com.maverickbank.enums.AccountStatus;
 import com.maverickbank.model.Account;
 
 public class AccountMapper {
@@ -26,6 +25,5 @@ public class AccountMapper {
                 account.getBranch().getAddress(),
                 account.getBranch().getIfscCode()
         );
-
     }
 }

@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -26,7 +25,6 @@ public class User implements UserDetails {
     private String username;
 
     @Column(nullable = false)
-    @ToString.Exclude
     private String password;
 
     private boolean isActive;
