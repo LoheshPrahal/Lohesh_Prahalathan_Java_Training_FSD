@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
 import ObjectList from './ObjectList'
 import axios from 'axios'
-import { Link, useSearchParams } from 'react-router'
-
-const PAGE_SIZE = 10
+import { Link } from 'react-router'
 
 function ObjectsDashboard() {
 
-    const [searchParams, setSearchParams] = useSearchParams()
     const [objects, setObjects] = useState([]);
+    const [page, setPage] = useState(1)
+    const pageSize = 9
 
     useEffect(() => {
         const getAllObjects = async () => {
             try {
                 const resp = await axios.get('https://api.restful-api.dev/objects')
                 setObjects(resp.data)
+                console.log(resp)
 
             } catch (err) {
                 console.log(err)
@@ -33,17 +33,12 @@ function ObjectsDashboard() {
         }
     }
 
-    const totalPages = Math.max(1, Math.ceil(objects.length / PAGE_SIZE))
+    const totalPages = Math.max(1, Math.ceil(objects.length / pageSize))
 
-    let page = parseInt(searchParams.get("page")) || 1
+    const pageObjects = objects.slice((page - 1) * pageSize, page * pageSize)
 
-    if (page < 1) page = 1
-    if (page > totalPages) page = totalPages
-
-    const pageObjects = objects.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-
-    const goToPage = (p) => {
-        setSearchParams({ page: p })
+    const onPageChange = (val) => {
+        setPage(val)
     }
 
     return (
@@ -57,24 +52,32 @@ function ObjectsDashboard() {
 
             <ObjectList objects={pageObjects} onDelete={onDelete} />
 
-            <nav aria-label="Page navigation">
-                <ul className="pagination">
-                    <li className={"page-item" + (page === 1 ? " disabled" : "")}>
-                        <button className="page-link" onClick={() => goToPage(page - 1)}>Previous</button>
+            <nav>
+                <ul className="pagination justify-content-center">
+
+                    <li className="page-item">
+                        <button className="page-link" onClick={() => setPage(page - 1)}
+                            disabled={page === 1}>Previous</button>
                     </li>
 
                     {
-                        Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                            <li key={p} className={"page-item" + (p === page ? " active" : "")}>
-                                <button className="page-link" onClick={() => goToPage(p)}>{p}</button>
+                        Array.from({ length: totalPages }, (e, index) => (
+                            <li key={index} className={"page-item " + (index + 1 === page ? "active": "")}>
+                                <button className="page-link" onClick={() => onPageChange(index + 1)}>
+                                    {index + 1}
+                                </button>
                             </li>
                         ))
                     }
 
-                    <li className={"page-item" + (page === totalPages ? " disabled" : "")}>
-                        <button className="page-link" onClick={() => goToPage(page + 1)}>Next</button>
+                    <li className="page-item">
+                        <button className="page-link" onClick={() => setPage(page + 1)}
+                            disabled={page === totalPages}>Next</button>
                     </li>
+
                 </ul>
+
+
             </nav>
         </div>
     )

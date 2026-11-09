@@ -2,14 +2,16 @@
 
 
 const getField = (data, name) => {
-    if (!data) return null
+    if (!data){
+        return null
+    }
     const key = Object.keys(data).find(k => k.toLowerCase().includes(name))
     if (key === undefined || data[key] === null || data[key] === "") return null
     return data[key]
 }
 
 const show = (value) => {
-    return value === null ? <span className="text-muted">N/A</span> : value
+    return value === null ? <span>N/A</span> : value
 }
 function ObjectList({objects, onDelete}) {
 
@@ -43,12 +45,7 @@ function ObjectList({objects, onDelete}) {
                             </div>
 
                             <div className="card-footer">
-                                <button
-                                    className="btn btn-primary btn-sm"
-                                    onClick={() => onDelete(o.id)}
-                                >
-                                    Delete
-                                </button>
+                                <button className="btn btn-primary" onClick={() => onDelete(o.id)}>Delete</button>
                             </div>
                         </div>
                     </div>
