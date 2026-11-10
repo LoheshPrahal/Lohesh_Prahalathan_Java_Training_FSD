@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<ObjectsDashboard />}/>
-      <Route path="add" element={<ObjectAdd />} />
+      <Route path="/add" element={<ObjectAdd />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   )

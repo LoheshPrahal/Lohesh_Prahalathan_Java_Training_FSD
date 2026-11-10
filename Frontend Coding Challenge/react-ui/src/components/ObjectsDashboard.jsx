@@ -8,8 +8,9 @@ import { addedObjects } from "./ObjectAdd"
 
 function ObjectsDashboard() {
 
-    const [objects, setObjects] = useState([]);
+    let [objects, setObjects] = useState([]);
     const [page, setPage] = useState(1)
+    // const [orderBy, setOrderBy] = useState("ASC")
     const pageSize = 9
 
     useEffect(() => {
@@ -17,14 +18,30 @@ function ObjectsDashboard() {
             try {
                 const resp = await axios.get('https://api.restful-api.dev/objects')
                 setObjects([...resp.data, ...addedObjects])
-                console.log(resp)
 
             } catch (err) {
                 console.log(err)
             }
         }
         getAllObjects()
+
     }, [])
+
+    const sortObjects = (orderBy) => {
+        const sorted = [...objects].sort((a, b) => {
+
+            if (a.data === null || a.data?.price == null) return 1;
+            if (b.data === null || b.data?.price == null) return -1;
+
+            if (orderBy === 'ASC') {
+                return Number(a.data.price) - Number(b.data.price);
+            }
+
+            return Number(b.data.price) - Number(a.data.price);
+        })
+
+        setObjects(sorted)
+    }
 
     const onDelete = async (id) => {
         try {
@@ -40,16 +57,17 @@ function ObjectsDashboard() {
 
     const pageObjects = objects.slice((page - 1) * pageSize, page * pageSize)
 
-    const onPageChange = (val) => {
-        setPage(val)
-    }
-
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center">
                 <h3>Objects</h3>
                 <Link className="btn btn-primary" to="/add">+ Add Object</Link>
             </div>
+            <hr />
+            <select className="form-select" onChange={(e) => sortObjects(e.target.value)}>
+                <option value="ASC">ASC</option>
+                <option value="DESC">DESC</option>
+            </select>
 
             <hr />
 
@@ -65,8 +83,8 @@ function ObjectsDashboard() {
 
                     {
                         Array.from({ length: totalPages }, (e, index) => (
-                            <li key={index} className={"page-item " + (index + 1 === page ? "active": "")}>
-                                <button className="page-link" onClick={() => onPageChange(index + 1)}>
+                            <li key={index} className={"page-item " + (index + 1 === page ? "active" : "")}>
+                                <button className="page-link" onClick={() => setPage(index + 1)}>
                                     {index + 1}
                                 </button>
                             </li>
