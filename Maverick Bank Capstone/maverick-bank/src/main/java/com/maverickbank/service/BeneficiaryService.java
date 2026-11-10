@@ -18,7 +18,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class BeneficiaryService {
     private final CustomerService customerService;
@@ -45,12 +44,10 @@ public class BeneficiaryService {
         beneficiary.setBranch(branch);
         beneficiaryRepository.save(beneficiary);
 
-        // Log: the customer has added a beneficiary
         log.info("Beneficiary account {} added by customer {}", dto.accountNumber(), name);
     }
 
     public List<BeneficiaryRespDto> getMyBeneficiaries(String name) {
-        // Log: beneficiaries of the customer are listed
         log.info("Fetching beneficiaries of customer {}", name);
 
         return beneficiaryRepository.getByCustomerUsername(name).stream().map(BeneficiaryMapper :: convertEntityToDto).toList();

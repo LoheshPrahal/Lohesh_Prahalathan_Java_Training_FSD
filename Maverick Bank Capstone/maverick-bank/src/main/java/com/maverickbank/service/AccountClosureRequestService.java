@@ -47,12 +47,10 @@ public class AccountClosureRequestService {
 
         accountClosureRequestRepository.save(request);
 
-        // Log: the customer has sent a closure request
         log.info("Closure request sent for account id {} by customer {}", accountId, username);
     }
 
     public List<AccountClosureRespDto> getPendingRequests() {
-        // Log: closure requests waiting for the employee are listed
         log.info("Fetching the pending account closure requests");
         return accountClosureRequestRepository.getByStatus(RequestStatus.PENDING);
     }
@@ -71,7 +69,6 @@ public class AccountClosureRequestService {
         request.setProcessedBy(employee);
         accountClosureRequestRepository.save(request);
 
-        // Log: the employee has approved the closure request
         log.info("Closure request {} approved by employee {}", requestId, name);
     }
 
@@ -83,7 +80,6 @@ public class AccountClosureRequestService {
         request.setProcessedBy(employee);
         accountClosureRequestRepository.save(request);
 
-        // Log: the employee has rejected the closure request
         log.info("Closure request {} rejected by employee {}", requestId, employeeUsername);
     }
 

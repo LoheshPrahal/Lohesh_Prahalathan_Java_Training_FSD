@@ -30,7 +30,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleResourceNotFoundException(
             ResourceNotFoundException e
     ){
-        //always reply the object not the string
         log.warn("Id not found in DB: {}", e.getMessage());
 
         return ResponseEntity

@@ -23,7 +23,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class LoanApplicationService {
     private final AccountService accountService;
@@ -54,19 +53,16 @@ public class LoanApplicationService {
 
         loanApplicationRepository.save(loanApplication);
 
-        // Log: the customer has applied for a loan
         log.info("Loan id {} applied by customer {}", dto.loanId(), customerUsername);
     }
 
     public List<LoanApplicationRespDto> getMyApplications(String customerUsername) {
-        // Log: loan applications of the customer are listed
         log.info("Fetching loan applications of customer {}", customerUsername);
 
         return loanApplicationRepository.getByCustomerUsername(customerUsername);
     }
 
     public List<LoanApplicationRespDto> getMyAvailedLoans(String customerUsername) {
-        // Log: loans already disbursed to the customer are listed
         log.info("Fetching availed loans of customer {}", customerUsername);
 
         // Repayment - the closed loans are also listed, so the customer sees them after the employee closes
@@ -88,14 +84,12 @@ public class LoanApplicationService {
 
     // Repayment - loans with the remaining amount zero, the employee closes them
     public List<LoanApplicationRespDto> getFullyPaidLoans() {
-        // Log: fully repaid loans are listed for the employee
         log.info("Fetching the fully repaid loans");
 
         return loanApplicationRepository.getFullyPaidLoans(LoanStatus.DISBURSED);
     }
 
     public List<LoanApplicationRespDto> getApplicationsByStatus(LoanStatus status) {
-        // Log: loan applications are listed for the employee
         log.info("Fetching loan applications with status {}", status);
 
         return loanApplicationRepository.getByStatus(status);
@@ -120,7 +114,6 @@ public class LoanApplicationService {
 
         loanApplicationRepository.save(loanApplication);
 
-        // Log: the employee has reviewed the loan application
         log.info("Loan application {} is {} by employee {}", applicationId, status, employeeUsername);
     }
 
@@ -146,17 +139,14 @@ public class LoanApplicationService {
         transactionService.recordTransaction(account, TransactionType.LOAN_DISBURSEMENT,
                 loanApplication.getRequestedAmount(), "Loan disbursement - " + loanApplication.getLoan().getLoanType(), null);
 
-        // Repayment - the full amount is to be paid back
         loanApplication.setRemainingAmount(loanApplication.getRequestedAmount());
 
         loanApplication.setStatus(LoanStatus.DISBURSED);
         loanApplicationRepository.save(loanApplication);
 
-        // Log: the loan amount is credited to the account
         log.info("Loan application {} is disbursed", applicationId);
     }
 
-    // Repayment - the customer repays any amount (not more than the remaining amount) from the account of the loan
     @Transactional(rollbackFor = Exception.class)
     public void repay(String customerUsername, LoanRepaymentDto dto) {
         LoanApplication loanApplication = getById(dto.applicationId());
@@ -187,7 +177,6 @@ public class LoanApplicationService {
         loanApplication.setRemainingAmount(remaining.subtract(dto.amount()));
         loanApplicationRepository.save(loanApplication);
 
-        // Log: the customer has repaid a part (or all) of the loan
         log.info("Loan application {} repaid {} by customer {}", dto.applicationId(), dto.amount(), customerUsername);
     }
 
@@ -206,7 +195,6 @@ public class LoanApplicationService {
         loanApplication.setStatus(LoanStatus.CLOSED);
         loanApplicationRepository.save(loanApplication);
 
-        // Log: the employee has closed the loan
         log.info("Loan application {} is closed by employee {}", applicationId, employeeUsername);
     }
 

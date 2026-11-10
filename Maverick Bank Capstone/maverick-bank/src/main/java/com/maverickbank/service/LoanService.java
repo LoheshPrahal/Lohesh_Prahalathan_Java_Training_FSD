@@ -14,7 +14,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class LoanService {
     private final LoanRepository loanRepository;
@@ -27,12 +26,10 @@ public class LoanService {
         Loan loan = LoanMapper.convertDtoToEntity(dto);
         loanRepository.save(loan);
 
-        // Log: a new loan is added
         log.info("Loan {} is added", dto.loanType());
     }
 
     public List<Loan> getAllLoans() {
-        // Log: all the loans are listed
         log.info("Fetching all the loans");
 
         return loanRepository.findAll();

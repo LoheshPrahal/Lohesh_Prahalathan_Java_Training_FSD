@@ -23,7 +23,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class AccountService {
     private final CustomerRepository customerRepository;
@@ -35,7 +34,6 @@ public class AccountService {
         Customer customer = customerRepository.findByUsername(customerUsername);
         if(customer == null) throw new ResourceNotFoundException("Customer not found!");
 
-        // Log: a new account is requested by the customer
         log.info("Customer {} requested a new {} account", customerUsername, dto.accountType());
 
         createBankAccount(customer, dto);
@@ -49,15 +47,12 @@ public class AccountService {
         account.setBalance(BigDecimal.ZERO);
         account.setAccountStatus(AccountStatus.PENDING);
 
-        // Log: the account is saved with the status PENDING (the employee approves it later)
         log.info("Creating account {} with status PENDING", account.getAccountNumber());
 
         return accountRepository.save(account);
     }
 
-    // Filter - the accounts of the customer can be filtered with the account type and the account status (both are optional)
     public List<AccountRespDto> getMyAccounts(String name, AccountType accountType, AccountStatus accountStatus) {
-        // Log: accounts of the customer are listed
         log.info("Fetching accounts of customer {} (type: {}, status: {})", name, accountType, accountStatus);
 
         return accountRepository.getMyAccountsDynamically(name, accountType, accountStatus).stream().map(AccountMapper::convertEntityToDto).toList();
@@ -78,7 +73,6 @@ public class AccountService {
     }
 
     public AccountRespDto getMyAccountById(Long id, String name) {
-        // Log: customer opens the details of an own account
         log.info("Fetching account id {} of customer {}", id, name);
 
         Account account = getOwnedAccount(id, name);
@@ -86,22 +80,18 @@ public class AccountService {
     }
 
     public AccountRespDto getAccountDetails(Long id) {
-        // Log: employee opens the details of an account
         log.info("Fetching details of account id {}", id);
 
         return AccountMapper.convertEntityToDto(getById(id));
     }
 
     public AccountRespDto getAccountDetailsByNumber(String accountNumber) {
-        // Log: employee searches an account with the account number
         log.info("Fetching details of account number {}", accountNumber);
 
         return AccountMapper.convertEntityToDto(getByAccountNumber(accountNumber));
     }
 
-    // Filter - the accounts waiting for approval can be filtered with the account type and the branch (both are optional)
     public List<AccountRespDto> getPendingAccounts(AccountType accountType, Long branchId) {
-        // Log: accounts waiting for the approval are listed
         log.info("Fetching the pending accounts (type: {}, branch id: {})", accountType, branchId);
 
         return accountRepository.getPendingAccountsDynamically(AccountStatus.PENDING, accountType, branchId).stream().map(AccountMapper :: convertEntityToDto).toList();
@@ -119,7 +109,6 @@ public class AccountService {
         account.setApprovedBy(employee);
         accountRepository.save(account);
 
-        // Log: the employee has approved the account
         log.info("Account id {} approved by employee {}", id, name);
     }
 
@@ -147,7 +136,6 @@ public class AccountService {
         account.setAccountStatus(AccountStatus.CLOSED);
         accountRepository.save(account);
 
-        // Log: the account is closed
         log.info("Account {} is closed", account.getAccountNumber());
     }
 
@@ -155,7 +143,6 @@ public class AccountService {
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
 
-        // Log: money is added to the account
         log.info("Credited {} to account {}", amount, account.getAccountNumber());
     }
 
@@ -165,7 +152,6 @@ public class AccountService {
         account.setBalance(account.getBalance().subtract(amount));
         accountRepository.save(account);
 
-        // Log: money is taken from the account
         log.info("Debited {} from account {}", amount, account.getAccountNumber());
     }
 }

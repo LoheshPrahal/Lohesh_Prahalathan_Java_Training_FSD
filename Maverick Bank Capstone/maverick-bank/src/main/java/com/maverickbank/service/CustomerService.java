@@ -22,7 +22,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class CustomerService {
     private final CustomerRepository customerRepository;
@@ -36,7 +35,6 @@ public class CustomerService {
     }
 
 
-    //Registration is also account creation for the customer.
     @Transactional(rollbackFor = Exception.class)
     public void insertCustomer(@Valid CustomerDto customerDto) {
         Customer customer = CustomerMapper.convertDtoToEntity(customerDto);
@@ -45,7 +43,6 @@ public class CustomerService {
         customerRepository.save(customer);
         accountService.createBankAccount(customer, new AccountDto(customerDto.accountType(), customerDto.branchId()));
 
-        // Log: a new customer is registered along with the first account
         log.info("Customer {} is registered", customerDto.username());
     }
 
@@ -54,21 +51,18 @@ public class CustomerService {
     }
 
     public CustomerRespDto getCustomerById(Long id) {
-        // Log: details of a customer are fetched
         log.info("Fetching customer id {}", id);
 
         return CustomerMapper.convertEntityToDto(findCustomerById(id));
     }
 
     public List<CustomerRespDto> getAllCustomers() {
-        // Log: all the customers are listed
         log.info("Fetching all the customers");
 
         return customerRepository.findAll().stream().map(CustomerMapper::convertEntityToDto).toList();
     }
 
     public CustomerRespDto getProfile(String name) {
-        // Log: customer opens the own profile
         log.info("Fetching profile of customer {}", name);
 
         return CustomerMapper.convertEntityToDto(findCustomerByUsername(name));
@@ -102,7 +96,6 @@ public class CustomerService {
 
         customerRepository.save(customer);
 
-        // Log: details of the customer are updated
         log.info("Customer id {} is updated", id);
     }
 
@@ -113,7 +106,6 @@ public class CustomerService {
         userService.deactivateUser(customer.getUser().getId());
         customerRepository.save(customer);
 
-        // Log: the customer cannot login anymore
         log.info("Customer id {} is deactivated", id);
     }
 }

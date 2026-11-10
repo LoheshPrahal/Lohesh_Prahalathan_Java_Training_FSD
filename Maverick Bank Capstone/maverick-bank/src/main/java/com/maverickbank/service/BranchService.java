@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class BranchService {
     private final BranchRepository branchRepository;
@@ -26,12 +25,10 @@ public class BranchService {
         Branch branch = BranchMapper.convertDtoToEntity(dto);
         branchRepository.save(branch);
 
-        // Log: a new branch is added
         log.info("Branch {} ({}) is added", dto.name(), dto.ifscCode());
     }
 
     public List<Branch> getAllBranches() {
-        // Log: all the branches are listed
         log.info("Fetching all the branches");
 
         return branchRepository.findAll();

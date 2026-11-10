@@ -23,7 +23,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class EmployeeService {
     private final UserService userService;
@@ -39,7 +38,6 @@ public class EmployeeService {
         employee.setBranch(branch);
         employeeRepository.save(employee);
 
-        // Log: a new bank employee is added
         log.info("Employee {} is added", dto.username());
     }
 
@@ -48,14 +46,12 @@ public class EmployeeService {
     }
 
     public EmployeeRespDto getEmployeeById(Long id) {
-        // Log: details of an employee are fetched
         log.info("Fetching employee id {}", id);
 
         return EmployeeMapper.convertEntityToDto(findEmployeeById(id));
     }
 
     public List<EmployeeRespDto> getAllEmployees(){
-        // Log: all the employees are listed
         log.info("Fetching all the employees");
 
         return employeeRepository.findAll().stream().map(EmployeeMapper::convertEntityToDto).toList();
@@ -81,7 +77,6 @@ public class EmployeeService {
 
         employeeRepository.save(employee);
 
-        // Log: details of the employee are updated
         log.info("Employee id {} is updated", id);
     }
 
@@ -91,7 +86,6 @@ public class EmployeeService {
         userService.deactivateUser(employee.getUser().getId());
         employeeRepository.save(employee);
 
-        // Log: the employee cannot login anymore
         log.info("Employee id {} is deactivated", id);
     }
 

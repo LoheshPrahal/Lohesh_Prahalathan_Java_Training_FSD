@@ -19,7 +19,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class AdminService {
     private final UserService userService;
@@ -31,12 +30,10 @@ public class AdminService {
         admin.setUser(user);
         adminRepository.save(admin);
 
-        // Log: a new admin is added
         log.info("Admin {} is added", dto.username());
     }
 
     public AdminRespDto getAdminById(Long id) {
-        // Log: details of an admin are fetched
         log.info("Fetching admin id {}", id);
 
         Admin admin = adminRepository.findById(id).orElseThrow(() ->
@@ -45,7 +42,6 @@ public class AdminService {
     }
 
     public List<AdminRespDto> getAllAdmin() {
-        // Log: all the admins are listed
         log.info("Fetching all the admins");
 
         return adminRepository.findAll().stream().map(AdminMapper :: convertEntityToDto).toList();

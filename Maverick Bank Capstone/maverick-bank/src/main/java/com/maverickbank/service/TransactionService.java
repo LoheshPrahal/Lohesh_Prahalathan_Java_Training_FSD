@@ -34,16 +34,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class TransactionService {
     private final AccountService accountService;
     private final TransactionRepository transactionRepository;
     private final BeneficiaryRepository beneficiaryRepository;
 
-    // Types which increase and decrease the balance of an account (used by the summary and the statement)
     private static final List<TransactionType> CREDIT_TYPES = List.of(TransactionType.DEPOSIT, TransactionType.LOAN_DISBURSEMENT, TransactionType.TRANSFER_IN);
-    // Repayment - LOAN_REPAYMENT is money going out of the account
     private static final List<TransactionType> DEBIT_TYPES = List.of(TransactionType.TRANSFER_OUT, TransactionType.WITHDRAWAL, TransactionType.LOAN_REPAYMENT);
     private static final DateTimeFormatter STATEMENT_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault());
 
@@ -54,7 +51,6 @@ public class TransactionService {
         accountService.credit(account, dto.amount());
         recordTransaction(account, TransactionType.DEPOSIT, dto.amount(), getDescription(dto.description(), "Cash Deposit"), null);
 
-        // Log: money is deposited by the customer
         log.info("Deposit of {} done by customer {} on account id {}", dto.amount(), name, dto.accountId());
     }
 
@@ -89,7 +85,6 @@ public class TransactionService {
         accountService.debit(account,dto.amount());
         recordTransaction(account, TransactionType.WITHDRAWAL, dto.amount(), getDescription(dto.description(), "Cash Withdrawal"), null);
 
-        // Log: money is withdrawn by the customer
         log.info("Withdrawal of {} done by customer {} on account id {}", dto.amount(), name, dto.accountId());
     }
 
@@ -117,12 +112,10 @@ public class TransactionService {
         recordTransaction(source, TransactionType.TRANSFER_OUT, dto.amount(), getDescription(dto.description(), "Transfer to " + beneficiary.getAccountName()), beneficiary);
         recordTransaction(destination, TransactionType.TRANSFER_IN, dto.amount(), getDescription(dto.description(), "Transfer from " + source.getAccountNumber()), null);
 
-        // Log: money is transferred to a beneficiary
         log.info("Transfer of {} done by customer {} from account id {} to beneficiary id {}", dto.amount(), name, dto.accountId(), dto.beneficiaryId());
     }
 
     public List<TransactionRespDto> getTransactionsByAccountDynamicFilter(String username, String accountNumber, LocalDate fromDate, LocalDate toDate, TransactionType transactionType, Integer page, Integer size) {
-        // Log: customer lists the transactions of an own account
         log.info("Fetching transactions of account {} for customer {}", accountNumber, username);
 
         Account account = accountService.getByAccountNumber(accountNumber);
@@ -135,7 +128,6 @@ public class TransactionService {
 
 
     public List<TransactionRespDto> getTransactionsByAccountDynamically(String accountNumber, LocalDate fromDate, LocalDate toDate, TransactionType transactionType, Integer page, Integer size) {
-        // Log: employee lists the transactions of an account
         log.info("Fetching transactions of account {}", accountNumber);
 
         Account account = accountService.getByAccountNumber(accountNumber);
@@ -145,7 +137,6 @@ public class TransactionService {
     }
 
     public List<TransactionRespDto> getAllTransactions(LocalDate fromDate, LocalDate toDate, TransactionType transactionType, Integer page, Integer size) {
-        // Log: employee lists the transactions of all the accounts
         log.info("Fetching transactions of all the accounts");
 
         Pageable pageable = PageRequest.of(page, size);
@@ -153,7 +144,6 @@ public class TransactionService {
     }
 
     public AccountSummaryDto getAccountSummary(Long accountId) {
-        // Log: total inbound and outbound of an account
         log.info("Fetching summary of account id {}", accountId);
 
         Account account = accountService.getById(accountId);

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
@@ -29,14 +28,12 @@ public class UserService {
         user.setRole(role);
         userRepository.save(user);
 
-        // Log: a login user is created (the password is never logged)
         log.info("User {} is created with the role {}", username, role);
 
         return user;
     }
 
     public User getUserByUsername(String username){
-        // Log: user is fetched with the username
         log.info("Fetching user {}", username);
 
         User user = userRepository.loadUserByUsername(username, true);
@@ -53,7 +50,6 @@ public class UserService {
         user.setActive(false);
         userRepository.save(user);
 
-        // Log: the user cannot login anymore
         log.info("User id {} is deactivated", id);
     }
 }

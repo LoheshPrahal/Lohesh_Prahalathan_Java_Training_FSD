@@ -18,7 +18,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class ReportService {
     private final AccountRepository accountRepository;
@@ -26,7 +25,6 @@ public class ReportService {
     private final LoanApplicationRepository loanApplicationRepository;
 
     public FinancialReportDto getFinancialReport() {
-        // Log: financial report is generated
         log.info("Generating the financial report");
 
         return new FinancialReportDto(
@@ -40,7 +38,6 @@ public class ReportService {
     }
 
     public List<TransactionRespDto> getRegulatoryReport(BigDecimal threshold, int page, int size) {
-        // Log: regulatory report with the high value transactions is generated
         log.info("Generating the regulatory report for the amount {} and above", threshold);
 
         Pageable pageable = PageRequest.of(page, size);

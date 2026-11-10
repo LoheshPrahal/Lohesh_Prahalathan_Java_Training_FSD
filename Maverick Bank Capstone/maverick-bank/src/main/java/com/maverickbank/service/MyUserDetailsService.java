@@ -11,14 +11,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-// Logging - the "log" object of this class comes from @Slf4j
 @Slf4j
 public class MyUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Log: user details are loaded for the authentication
         log.info("Loading user {}", username);
 
         User user = userRepository.loadUserByUsername(username,true);
