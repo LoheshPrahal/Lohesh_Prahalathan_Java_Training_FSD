@@ -158,9 +158,7 @@ public class TransactionService {
 
 
 
-    // Statement - the customer downloads the transactions of an own account as csv (the dates are optional)
     public String getStatementCsv(String username, String accountNumber, LocalDate fromDate, LocalDate toDate) {
-        // Log: customer generates the account statement
         log.info("Generating statement of account {} for customer {}", accountNumber, username);
 
         Account account = accountService.getByAccountNumber(accountNumber);
@@ -186,7 +184,7 @@ public class TransactionService {
             if((start != null && t.transactionDate().isBefore(start)) || (end != null && !t.transactionDate().isBefore(end))) continue;
 
             csv.append(STATEMENT_DATE.format(t.transactionDate())).append(',')
-                    .append(csvValue(t.description())).append(',')
+                    .append(t.description()).append(',')
                     .append(t.transactionType()).append(',')
                     .append(isCredit ? t.amount().toPlainString() : "").append(',')
                     .append(isCredit ? "" : t.amount().toPlainString()).append(',')
@@ -196,12 +194,7 @@ public class TransactionService {
         return csv.toString();
     }
 
-    // Text is put in quotes (a quote inside is doubled), and a leading = + - @ is made harmless for spreadsheets
-    private String csvValue(String value) {
-        if(value == null) return "\"\"";
-        if(value.startsWith("=") || value.startsWith("+") || value.startsWith("-") || value.startsWith("@")) value = "'" + value;
-        return "\"" + value.replace("\"", "\"\"") + "\"";
-    }
+
 
     private Instant getStart(LocalDate fromDate) {
         return fromDate == null ? null : fromDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
