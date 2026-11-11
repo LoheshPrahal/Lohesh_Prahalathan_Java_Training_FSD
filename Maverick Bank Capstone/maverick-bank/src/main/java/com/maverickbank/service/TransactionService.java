@@ -180,15 +180,14 @@ public class TransactionService {
             boolean isCredit = CREDIT_TYPES.contains(t.transactionType());
             balance = isCredit ? balance.add(t.amount()) : balance.subtract(t.amount());
 
-            // Only the selected dates are in the statement, but the balance counts the earlier transactions also
             if((start != null && t.transactionDate().isBefore(start)) || (end != null && !t.transactionDate().isBefore(end))) continue;
 
             csv.append(STATEMENT_DATE.format(t.transactionDate())).append(',')
                     .append(t.description()).append(',')
                     .append(t.transactionType()).append(',')
-                    .append(isCredit ? t.amount().toPlainString() : "").append(',')
-                    .append(isCredit ? "" : t.amount().toPlainString()).append(',')
-                    .append(balance.toPlainString()).append('\n');
+                    .append(isCredit ? t.amount().toString() : "").append(',')
+                    .append(isCredit ? "" : t.amount().toString()).append(',')
+                    .append(balance.toString()).append('\n');
         }
 
         return csv.toString();

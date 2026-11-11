@@ -13,7 +13,6 @@ function Login() {
     const apiUrl = API_SERVER_URL_DEV + '/api/auth/login'
 
     const navigate =  useNavigate()
-    // The sign up screen sends a message here after the registration
     const location = useLocation()
     const successMsg = location.state?.message
 
